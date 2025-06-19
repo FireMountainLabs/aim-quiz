@@ -66,11 +66,16 @@ function populateUIContent() {
     // Handle logo image replacement
     const logoArea = document.querySelector('.logo-area');
     const existingLogo = logoArea.querySelector('.app-logo');
-    if (existingLogo) {
+    if (existingLogo && quizConfig.app_config.logo_image_url) {
         const logoImg = document.createElement('img');
-        logoImg.src = '/logo.png';
+        logoImg.src = quizConfig.app_config.logo_image_url;
         logoImg.alt = quizConfig.app_config.company_name + ' Logo';
         logoImg.className = 'app-logo';
+        logoImg.onerror = function() {
+            console.warn('Failed to load logo from:', this.src);
+            // Fallback to text if image fails to load
+            this.style.display = 'none';
+        };
         existingLogo.replaceWith(logoImg);
     }
     
