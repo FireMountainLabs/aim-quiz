@@ -1,3 +1,4 @@
+*.png
 # Logs
 logs
 *.log
@@ -134,3 +135,15 @@ dist
 .yarn/build-state.yml
 .yarn/install-state.gz
 .pnp.*
+
+# AI Maturity Snapshot specific
+deploy/
+script.template.js
+.DS_Store
+*.tmp
+*.temp
+
+# Vite
+dist/
+dist-ssr/
+*.local
