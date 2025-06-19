@@ -92,12 +92,3 @@ Proprietary to Fire Mountain Labs. All rights reserved.
 
 ---
 _Built with ❤️ by Fire Mountain Labs_
-
-.heading-class {
-  white-space: normal;
-  overflow: visible;
-  text-overflow: unset;
-  width: 100%;
-  max-width: 100%;
-  display: block;
-}

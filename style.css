@@ -1145,12 +1145,24 @@ body::before {
   color: #fff;
   margin-bottom: 0.8rem;
   letter-spacing: -0.02em;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  width: 100%;
+  max-width: 100%;
+  display: block;
 }
 
 .quiz-header p {
   font-size: 1.1rem;
   color: #b3baff;
   line-height: 1.6;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  width: 100%;
+  max-width: 100%;
+  display: block;
 }
 
 /* Question Card Styling */
@@ -1179,6 +1191,12 @@ body::before {
   color: #fff;
   margin-bottom: 1.5rem;
   line-height: 1.5;
+  white-space: normal !important;
+  overflow: visible !important;
+  text-overflow: unset !important;
+  width: 100%;
+  max-width: 100%;
+  display: block;
 }
 
 /* Choice Styling */
