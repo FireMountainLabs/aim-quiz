@@ -64,16 +64,14 @@ function populateUIContent() {
     }
     
     // Handle logo image replacement
-    if (quizConfig.app_config.logo_image_url) {
-        const logoArea = document.querySelector('.logo-area');
-        const existingLogo = logoArea.querySelector('.app-logo');
-        if (existingLogo) {
-            const logoImg = document.createElement('img');
-            logoImg.src = quizConfig.app_config.logo_image_url;
-            logoImg.alt = `${quizConfig.app_config.company_name} Logo`;
-            logoImg.className = 'app-logo';
-            existingLogo.replaceWith(logoImg);
-        }
+    const logoArea = document.querySelector('.logo-area');
+    const existingLogo = logoArea.querySelector('.app-logo');
+    if (existingLogo) {
+        const logoImg = document.createElement('img');
+        logoImg.src = '/logo.png';
+        logoImg.alt = quizConfig.app_config.company_name + ' Logo';
+        logoImg.className = 'app-logo';
+        existingLogo.replaceWith(logoImg);
     }
     
     generateContactForm();
