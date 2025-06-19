@@ -1,16 +1,15 @@
 {
   "app_config": {
-    "title": "AI Maturity Snapshot",
-    "subtitle": "Get Your Organization's AI Readiness Score in 5 Minutes!",
-    "company_name": "FIRE MOUNTAIN LABS",
-    "hero_emoji": "🤖",
-    "footer_copyright": "© 2024 Fire Mountain Labs. AI Maturity Assessment Tool.",
-    "footer_tagline": "Powered by cutting-edge AI expertise and proven methodologies."
+    "title": "AI Maturity Checkup",
+    "subtitle": "Answer these 5 questions to receive a custom report diagnosing your AI readiness. Pinpoint your risks and opportunities to build a high-impact roadmap for growth.",
+    "logo_image_url": "https://lh4.googleusercontent.com/23OwLI90axjKvcfe6PWkjSEaLegh84krmxNNk2daP7_GT-J3MmyXJ0E-g1e2ZpGm3VfX5psTEd6RWeNEBt-A2zbyEUK-smaj2pQioXkN_IlkeygfrHi7NBdQJkyr-Ca9cwyIKOnzKS9Wb78byJV2nW9CG2Uk7w9Uvz-2bV53fxF04XeQiMUuUg=w1280",
+    "footer_copyright": "© 2025 Fire Mountain Labs. AI Maturity Snapshot.",
+    "footer_tagline": "Humans that know AI."
   },
   "sections": {
     "quiz": {
-      "title": "🎯 Quick Assessment",
-      "description": "Answer 5 questions to get your AI maturity snapshot"
+      "title": "Begin the Assessment",
+      "description": "It only takes a few moments to complete."
     },
     "snapshot": {
       "title": "AI MATURITY SNAPSHOT",

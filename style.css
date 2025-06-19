@@ -74,8 +74,8 @@ body, html {
 }
 
 body {
-  background: linear-gradient(120deg, #10131a 0%, #18202b 100%);
-  color: #e6e6e6;
+  background: #003452;
+  color: #fff;
   font-family: 'Inter', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
   font-size: 1.12rem;
   line-height: 1.7;
@@ -741,15 +741,10 @@ body::before {
 }
 
 .hero-logo {
-  display: block;
-  max-width: 270px;
-  max-height: 270px;
-  width: auto;
+  width: min(220px, 60vw);
   height: auto;
-  margin-bottom: 2rem;
-  border-radius: 0.5rem;
-  box-shadow: 0 4px 24px 0 #00345244;
-  background: transparent;
+  display: block;
+  margin: 0 auto 1.2rem auto;
 }
 
 .hero-title {
@@ -839,11 +834,62 @@ body::before {
 }
 
 @font-face {
-  font-family: 'Halcom Medium';
+  font-family: 'Halcom-Medium';
   src: url('/fonts/Halcom-Medium.otf') format('opentype');
   font-weight: 500;
   font-style: normal;
   font-display: swap;
+}
+
+.halcom-title {
+  font-family: 'Halcom-Medium', 'Inter', Arial, sans-serif;
+  font-weight: 500;
+  font-size: 2.8rem;
+  color: #fff;
+  text-align: center;
+  margin: 1.2rem 0 0.5rem 0;
+  letter-spacing: 0.02em;
+}
+
+/* Center logo/title area and adjust spacing */
+.logo-area {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 0rem;
+}
+
+.app-logo {
+  width: min(220px, 60vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 1.2rem auto;
+}
+
+@media (max-width: 600px) {
+  .halcom-title {
+    font-size: 2rem;
+  }
+  .app-logo,
+  .hero-logo {
+    width: min(160px, 80vw);
+    height: auto;
+    margin: 0 auto 1.2rem auto;
+  }
+  .logo-area {
+    margin-bottom: 0.5rem;
+  }
+  .page-title {
+    font-size: 3rem;
+    margin: 0.1rem 0 0.1rem 0;
+  }
+  .main-header {
+    padding-top: 1.2rem;
+  }
+  .hero-content {
+    min-height: 40vh;
+  }
 }
 
 .pillar-description-card {
@@ -1736,4 +1782,162 @@ body::before {
 @keyframes spin {
   0% { transform: rotate(0deg); }
   100% { transform: rotate(360deg); }
+}
+
+/* Header and Logo Styles */
+.main-header {
+  background: none;
+  box-shadow: none;
+  padding: 0;
+  margin-bottom: 0;
+  padding-top: 5.5rem;
+}
+
+.header-content {
+  max-width: var(--container-width);
+  margin: 0 auto;
+  padding: 0 0rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: .5rem;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+  margin-bottom: 0;
+}
+
+.app-logo {
+  width: min(220px, 60vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 1.2rem auto;
+}
+
+.brand-title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 0.05em;
+}
+
+.page-title {
+  font-size: 3rem;
+  font-weight: 800;
+  color: #fff;
+  margin: 0.1rem 0 0.1rem 0;
+  text-shadow: 0 2px 4px rgba(0,0,0,0.08);
+}
+
+.page-subtitle {
+  font-size: 1.25rem;
+  color: #fff;
+  max-width: 600px;
+  margin: 0 auto;
+  opacity: 0.95;
+  padding-bottom: 2rem;
+}
+
+.hero-content {
+  min-height: 40vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  text-align: center;
+  gap: 1rem;
+}
+
+.logo-area {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
+.app-logo {
+  width: min(270px, 50vw);
+  height: auto;
+  display: block;
+  margin: 0 auto 1.2rem auto;
+}
+
+/* Responsive adjustments for header */
+@media (max-width: 768px) {
+  .header-content {
+    padding: 0 1rem;
+  }
+  
+  .app-logo {
+    width: min(200px, 80vw);
+    height: auto;
+  }
+  
+  .brand-title {
+    font-size: 1.25rem;
+  }
+  
+  .page-title {
+    font-size: 2.0rem;
+  }
+  
+  .page-subtitle {
+    font-size: 1rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .main-header {
+    padding: 1rem 0;
+  }
+  
+  .logo-area {
+    flex-direction: column;
+    gap: 0.0rem;
+    padding-top: 1.5rem;
+  }
+  
+  .app-logo {
+    width: min(200px, 90vw);
+    height: auto;
+  }
+  
+  .brand-title {
+    font-size: 1.1rem;
+  }
+  
+  .page-title {
+    font-size: 2rem;
+  }
+}
+
+.card-footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 1rem;
+  flex-wrap: wrap;
+  padding-top: 1.5rem;
+  background: none;
+  border: none;
+}
+.card-footer .btn {
+  width: auto;
+  min-width: 180px;
+  margin: 0;
+}
+@media (max-width: 600px) {
+  .card-footer {
+    flex-direction: column;
+    gap: 0.75rem;
+    align-items: stretch;
+  }
+  .card-footer .btn {
+    width: 100%;
+    min-width: 0;
+  }
 } 

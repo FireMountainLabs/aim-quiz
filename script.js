@@ -57,6 +57,25 @@ function populateUIContent() {
     document.getElementById('back-to-quiz').textContent = quizConfig.buttons.back_to_quiz.text;
     document.getElementById('download-snapshot').textContent = quizConfig.buttons.download_snapshot.text;
     document.getElementById('start-over').textContent = quizConfig.buttons.start_over.text;
+    
+    // Hide quiz actions if no questions
+    if (!quizConfig.questions || quizConfig.questions.length === 0) {
+        document.getElementById('quiz-actions').style.display = 'none';
+    }
+    
+    // Handle logo image replacement
+    if (quizConfig.app_config.logo_image_url) {
+        const logoArea = document.querySelector('.logo-area');
+        const existingLogo = logoArea.querySelector('.app-logo');
+        if (existingLogo) {
+            const logoImg = document.createElement('img');
+            logoImg.src = quizConfig.app_config.logo_image_url;
+            logoImg.alt = `${quizConfig.app_config.company_name} Logo`;
+            logoImg.className = 'app-logo';
+            existingLogo.replaceWith(logoImg);
+        }
+    }
+    
     generateContactForm();
 }
 
@@ -161,6 +180,8 @@ function renderSingleQuestion() {
             }, 250);
         });
     });
+    // Focus the screen on the question card
+    questionDiv.scrollIntoView({ behavior: 'smooth', block: 'center' });
 }
 
 function showQuizSection() {
