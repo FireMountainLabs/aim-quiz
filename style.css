@@ -326,10 +326,24 @@ body::before {
 
 .pillar-row {
   display: flex;
-  flex-direction: row;
-  align-items: stretch;
-  gap: 2.5rem;
-  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  position: relative;
+}
+
+.pillar-row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pillar-row:last-child {
+  border-bottom: none;
 }
 
 .pillar-card {
@@ -1322,220 +1336,236 @@ body::before {
 }
 
 .btn-outline:hover {
-  background: rgba(207, 207, 207, 0.1);
-  color: #fff;
-  border-color: #fff;
-  transform: translateY(-2px);
+  background-color: var(--primary);
+  color: white;
 }
 
 /* Snapshot Section Styling */
 .snapshot-section {
-  margin-bottom: 2.5rem;
+  background: #00263A; /* Dark blue-black background */
+  padding: 4rem 0;
+  color: #FFFFFF;
 }
 
 .snapshot-container {
-  max-width: 900px;
+  max-width: 1200px;
   margin: 0 auto;
+  padding: 0 2rem;
 }
 
 .snapshot-card {
-  background: rgba(24, 32, 43, 0.96);
-  border-radius: 1.5rem;
-  box-shadow: 0 4px 32px 0 rgba(0,0,0,0.18), 0 1.5px 8px 0 #23244a22;
-  padding: 2.5rem 2rem;
-  border: 1px solid rgba(100,108,255,0.14);
-  position: relative;
+  background: transparent;
+  border: none;
+  box-shadow: none;
 }
 
 .card-header {
   text-align: center;
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.2);
   padding-bottom: 1.5rem;
-  border-bottom: 1px solid rgba(100,108,255,0.20);
 }
 
 .card-title {
-  font-size: 2.2rem;
-  font-weight: 800;
-  color: #fff;
-  margin-bottom: 0.5rem;
-  letter-spacing: -0.02em;
+  font-size: 2.5rem;
+  font-weight: 700;
+  letter-spacing: 2px;
+  margin: 0;
 }
 
 .card-subtitle {
-  font-size: 1.1rem;
-  color: #cfcfcf;
+  font-size: 1.2rem;
+  opacity: 0.8;
+  margin-top: 0.5rem;
 }
 
-.card-body {
-  margin-bottom: 2rem;
-}
-
-/* Score Section */
 .score-section {
-  text-align: center;
-  margin-bottom: 2.5rem;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-bottom: 3rem;
 }
 
 .overall-score {
   display: flex;
   align-items: center;
-  justify-content: center;
   gap: 2rem;
-  flex-wrap: wrap;
 }
 
 .score-circle {
   width: 120px;
   height: 120px;
   border-radius: 50%;
-  background: linear-gradient(135deg, #CB6929 0%, #74121D 100%);
+  background: #CB6929; /* Accent orange */
   display: flex;
-  align-items: center;
   justify-content: center;
-  font-size: 2.5rem;
-  font-weight: 800;
-  color: #fff;
-  box-shadow: 0 8px 32px 0 rgba(203, 105, 41, 0.25);
-  position: relative;
-}
-
-.score-circle::before {
-  content: '';
-  position: absolute;
-  top: -4px;
-  left: -4px;
-  right: -4px;
-  bottom: -4px;
-  border-radius: 50%;
-  background: linear-gradient(135deg, #CB6929, #74121D, #56876D);
-  z-index: -1;
-  opacity: 0.3;
+  align-items: center;
+  font-size: 3rem;
+  font-weight: 700;
+  color: #FFFFFF;
+  box-shadow: 0 0 20px rgba(203, 105, 41, 0.5);
 }
 
 .score-label h3 {
-  font-size: 1.5rem;
+  margin: 0;
+  font-size: 2rem;
   font-weight: 700;
-  color: #fff;
-  margin-bottom: 0.5rem;
 }
 
 .score-label p {
+  margin: 0;
   font-size: 1rem;
-  color: #cfcfcf;
-  line-height: 1.5;
+  max-width: 300px;
+  opacity: 0.9;
 }
 
-/* Pillars Section */
 .pillars-section {
-  margin-bottom: 2.5rem;
+  margin-bottom: 3rem;
 }
 
 .pillars-section h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 1.5rem;
   text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
 }
 
 .pillars-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: 1.5rem;
+  display: flex;
+  flex-direction: column;
+  background: #003452;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 1rem;
+  gap: 0;
 }
 
-.pillar-item {
-  background: linear-gradient(135deg, rgba(100,108,255,0.10) 0%, rgba(83,91,242,0.08) 100%);
-  border: 1px solid rgba(100,108,255,0.14);
-  border-radius: 1rem;
-  padding: 1.5rem;
-  text-align: center;
-  transition: all 0.3s ease;
+.pillar-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1.5rem 1rem;
+  position: relative;
 }
 
-.pillar-item:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 8px 32px 0 rgba(100,108,255,0.15);
+.pillar-row:not(:last-child)::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 1rem;
+  right: 1rem;
+  height: 1px;
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+.pillar-row:last-child {
+  border-bottom: none;
+}
+
+.pillar-details {
+  display: flex;
+  align-items: center;
+  flex: 1;
+}
+
+.pillar-icon {
+  width: 36px;
+  height: 36px;
+  margin-right: 1rem;
+  vertical-align: middle;
 }
 
 .pillar-name {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #fff;
-  margin-bottom: 0.5rem;
+  font-weight: 500;
 }
 
-.pillar-score {
-  font-size: 1.5rem;
-  font-weight: 800;
-  color: #CB6929;
-  margin-bottom: 0.5rem;
+.pillar-performance {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
 }
 
-.progress-bar {
-  width: 100%;
-  height: 8px;
-  background: rgba(100,108,255,0.20);
-  border-radius: 4px;
-  overflow: hidden;
-  margin-top: 0.5rem;
+.pillar-score-info {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: #CFCFCF;
+  width: 50px; /* Fixed width for alignment */
+  justify-content: flex-end;
 }
 
-.progress-fill {
-  height: 100%;
-  background: linear-gradient(90deg, #CB6929 0%, #74121D 100%);
-  border-radius: 4px;
-  transition: width 0.8s ease;
+.pillar-score-text {
+  font-size: 0.9rem;
 }
 
-/* Recommendations Section */
-.recommendations-section {
-  margin-bottom: 2rem;
+.pillar-meter-horizontal {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.meter-block {
+  width: 28px;
+  height: 28px;
+  background-color: #e0e0e0;
+  border-radius: 6px;
+  transition: background-color 0.3s ease;
+}
+
+.meter-block.filled {
+  background-color: #CB6929;
+}
+
+/* Hide old vertical meter */
+.pillar-meter-vertical {
+  display: none;
+}
+
+@media (max-width: 768px) {
+  .pillar-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+
+  .pillar-performance {
+    align-self: flex-start;
+  }
 }
 
 .recommendations-section h3 {
-  font-size: 1.5rem;
-  font-weight: 700;
-  color: #fff;
-  margin-bottom: 1.5rem;
   text-align: center;
+  font-size: 1.8rem;
+  margin-bottom: 2rem;
+  font-weight: 600;
 }
 
 .recommendations-list {
-  display: flex;
-  flex-direction: column;
-  gap: 1rem;
+  max-width: 800px;
+  margin: 0 auto;
+  background: #003452;
+  padding: 2rem;
+  border-radius: 12px;
 }
 
 .recommendation-item {
-  background: linear-gradient(135deg, rgba(100,108,255,0.10) 0%, rgba(83,91,242,0.08) 100%);
-  border: 1px solid rgba(100,108,255,0.14);
-  border-radius: 1rem;
-  padding: 1.2rem 1.5rem;
   display: flex;
-  align-items: flex-start;
   gap: 1rem;
-  transition: all 0.3s ease;
+  padding: 1rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-.recommendation-item:hover {
-  transform: translateX(4px);
-  box-shadow: 0 4px 24px 0 rgba(100,108,255,0.15);
+.recommendation-item:last-child {
+  border-bottom: none;
 }
 
 .recommendation-icon {
+  font-size: 1.5rem;
   color: #CB6929;
-  font-size: 1.2rem;
-  margin-top: 0.1rem;
-  flex-shrink: 0;
 }
 
 .recommendation-text {
-  color: #e6e6e6;
   font-size: 1rem;
-  line-height: 1.5;
-  flex: 1;
+  line-height: 1.6;
 }
 
 /* Contact Section Styling */
@@ -1679,8 +1709,9 @@ body::before {
   .quiz-section,
   .snapshot-card,
   .contact-card {
-    padding: 1.5rem 1rem;
-    margin: 0 1rem 2rem 1rem;
+    padding: 1.5rem;
+    margin: 0 0 2rem 0;
+    border-radius: 0;
   }
   
   .quiz-header h2,
@@ -1949,4 +1980,33 @@ body::before {
     width: 100%;
     min-width: 0;
   }
+}
+
+@media (min-width: 769px) {
+    .snapshot-card {
+        padding: 2rem 3rem; /* More horizontal padding */
+    }
+
+    .pillar-row {
+        padding-top: 1.5rem;
+        padding-bottom: 1.5rem;
+    }
+
+    .pillar-details {
+        gap: 1rem;
+    }
+
+    .pillar-icon {
+        width: 44px;
+        height: 44px;
+    }
+
+    .pillar-name {
+        font-size: 1.15rem;
+        letter-spacing: 0.05em;
+    }
+
+    .pillar-performance {
+        padding-right: 1.5rem;
+    }
 } 

@@ -250,105 +250,154 @@ function hideAllSections() {
 }
 
 function calculateResults(answers) {
-    const totalScore = Object.values(answers).reduce((sum, answer) => sum + answer.score, 0);
-    const maxScore = quizConfig.questions.length * 4;
-    const percentage = Math.round((totalScore / maxScore) * 100);
-    const scoreRanges = quizConfig.interpretation_guide.total_score_ranges;
-    let maturityLevel = 'Low Maturity';
-    let maturityDescription = 'Limited AI readiness requiring foundational work across multiple areas.';
-    let recommendations = [];
-    if (percentage >= 80) {
-        const range = scoreRanges['16-20'];
-        maturityLevel = range.level;
-        maturityDescription = range.description;
-        recommendations = range.recommendations;
-    } else if (percentage >= 60) {
-        const range = scoreRanges['11-15'];
-        maturityLevel = range.level;
-        maturityDescription = range.description;
-        recommendations = range.recommendations;
-    } else if (percentage >= 40) {
-        const range = scoreRanges['6-10'];
-        maturityLevel = range.level;
-        maturityDescription = range.description;
-        recommendations = range.recommendations;
-    } else {
-        const range = scoreRanges['0-5'];
-        maturityLevel = range.level;
-        maturityDescription = range.description;
-        recommendations = range.recommendations;
+    const pillarScores = calculatePillarScores(answers);
+    
+    // Calculate average of pillar scores with a maximum of 4.5/5
+    let totalPillarScore = 0;
+    let totalPillarCount = 0;
+    
+    Object.values(pillarScores).forEach(pillarResult => {
+        if (pillarResult.count > 0) {
+            totalPillarScore += pillarResult.score / pillarResult.count; // Average score for this pillar
+            totalPillarCount++;
+        }
+    });
+    
+    const averagePillarScore = totalPillarCount > 0 ? totalPillarScore / totalPillarCount : 0;
+    const cappedAverageScore = Math.min(averagePillarScore, 4.5); // Cap at 4.5/5
+    
+    // Calculate total score for maturity level determination (keep existing logic)
+    let totalScore = 0;
+    Object.values(answers).forEach(answer => {
+        totalScore += answer.score;
+    });
+
+    let maturityLevel = null;
+    for (const range in quizConfig.interpretation_guide.total_score_ranges) {
+        const [min, max] = range.split('-').map(Number);
+        if (totalScore >= min && totalScore <= max) {
+            maturityLevel = quizConfig.interpretation_guide.total_score_ranges[range];
+            break;
+        }
     }
-    const uncertaintyAnswers = Object.values(answers).filter(answer => answer.choice === "I Don't Know");
-    if (uncertaintyAnswers.length > 0) {
-        const uncertaintyGuidance = quizConfig.interpretation_guide.uncertainty_guidance;
-        recommendations.unshift(...uncertaintyGuidance.recommendations);
+
+    let recommendations = maturityLevel ? [...maturityLevel.recommendations] : [];
+    const hasUncertainAnswers = Object.values(answers).some(a => a.choice === "I Don't Know");
+    if (hasUncertainAnswers) {
+        recommendations.push(...quizConfig.interpretation_guide.uncertainty_guidance.recommendations);
     }
+
     return {
         totalScore,
-        percentage,
+        averagePillarScore: cappedAverageScore, // New field for the score circle
         maturityLevel,
-        maturityDescription,
-        recommendations,
-        pillarScores: calculatePillarScores(answers)
+        pillarScores,
+        recommendations
     };
 }
 
 function calculatePillarScores(answers) {
     const pillarScores = {};
+    Object.keys(quizConfig.pillars).forEach(pillarKey => {
+        pillarScores[pillarKey] = {
+            score: 0,
+            count: 0
+        };
+    });
+
     Object.values(answers).forEach(answer => {
-        const pillars = answer.question.pillars_covered;
-        pillars.forEach(pillar => {
-            if (!pillarScores[pillar]) pillarScores[pillar] = { total: 0, count: 0 };
-            pillarScores[pillar].total += answer.score;
-            pillarScores[pillar].count += 1;
+        const question = answer.question;
+        const pillars = question.pillars_covered;
+
+        pillars.forEach(pillarKey => {
+            pillarScores[pillarKey].score += answer.score;
+            pillarScores[pillarKey].count++;
         });
     });
-    Object.keys(pillarScores).forEach(pillar => {
-        const avg = pillarScores[pillar].total / pillarScores[pillar].count;
-        pillarScores[pillar] = Math.round(avg * 25);
-    });
+
     return pillarScores;
 }
 
 function displaySnapshot(results) {
-    document.getElementById('overall-score').textContent = results.totalScore;
-    document.getElementById('maturity-level').textContent = results.maturityLevel;
-    document.getElementById('maturity-description').textContent = results.maturityDescription;
+    // Display the average pillar score (capped at 4.5) in the score circle
+    document.getElementById('overall-score').textContent = results.averagePillarScore.toFixed(1);
+    if (results.maturityLevel) {
+        document.getElementById('maturity-level').textContent = results.maturityLevel.level;
+        document.getElementById('maturity-description').textContent = results.maturityLevel.description;
+    } else {
+        document.getElementById('maturity-level').textContent = 'N/A';
+        document.getElementById('maturity-description').textContent = 'Could not determine maturity level.';
+    }
+
     const pillarsContainer = document.getElementById('pillars-container');
     pillarsContainer.innerHTML = '';
-    Object.entries(results.pillarScores).forEach(([pillar, score]) => {
-        const pillarElement = createPillarElement(pillar, score);
+    for (const pillarKey in results.pillarScores) {
+        const pillarInfo = quizConfig.pillars[pillarKey];
+        const pillarResult = results.pillarScores[pillarKey];
+        // Calculate average score for this pillar
+        const averageScore = pillarResult.count > 0 ? pillarResult.score / pillarResult.count : 0;
+        const pillarElement = createPillarElement(pillarInfo, averageScore);
         pillarsContainer.appendChild(pillarElement);
-    });
+    }
+
     const recommendationsContainer = document.getElementById('recommendations-container');
     recommendationsContainer.innerHTML = '';
-    results.recommendations.forEach((recommendation, index) => {
-        const recommendationElement = createRecommendationElement(recommendation, index);
-        recommendationsContainer.appendChild(recommendationElement);
-    });
+    if (results.recommendations && results.recommendations.length > 0) {
+        results.recommendations.forEach((rec, index) => {
+            recommendationsContainer.appendChild(createRecommendationElement(rec, index));
+        });
+    } else {
+        recommendationsContainer.innerHTML = '<p>No recommendations available.</p>';
+    }
 }
 
 function createPillarElement(pillar, score) {
-    const pillarDiv = document.createElement('div');
-    pillarDiv.className = 'pillar-item';
-    pillarDiv.innerHTML = `
-        <div class="pillar-name">${pillar}</div>
-        <div class="pillar-score">${score}%</div>
-        <div class="progress-bar">
-            <div class="progress-fill" style="width: ${score}%"></div>
+    const pillarRow = document.createElement('div');
+    pillarRow.className = 'pillar-row';
+
+    // Calculate blocks to fill based on the score (0-4.5 scale)
+    let blocksToFill = 0;
+    if (score <= 0) {
+        blocksToFill = 0;
+    } else if (score <= 1) {
+        blocksToFill = 1;
+    } else if (score <= 2) {
+        blocksToFill = 2;
+    } else if (score <= 3) {
+        blocksToFill = 3;
+    } else if (score <= 4) {
+        blocksToFill = 4;
+    } else {
+        blocksToFill = 5; // For scores 4-4.5
+    }
+
+    let meterBlocksHtml = '';
+    for (let i = 0; i < 5; i++) {
+        meterBlocksHtml += `<div class="meter-block ${i < blocksToFill ? 'filled' : ''}"></div>`;
+    }
+
+    pillarRow.innerHTML = `
+        <div class="pillar-details">
+            <img src="${pillar.icon}" alt="${pillar.name}" class="pillar-icon">
+            <span class="pillar-name">${pillar.name.toUpperCase()}</span>
+        </div>
+        <div class="pillar-performance">
+            <div class="pillar-meter-horizontal">
+                ${meterBlocksHtml}
+            </div>
         </div>
     `;
-    return pillarDiv;
+    return pillarRow;
 }
 
 function createRecommendationElement(recommendation, index) {
-    const recommendationDiv = document.createElement('div');
-    recommendationDiv.className = 'recommendation-item';
-    recommendationDiv.innerHTML = `
+    const recElement = document.createElement('div');
+    recElement.className = 'recommendation-item';
+    recElement.innerHTML = `
         <div class="recommendation-icon">💡</div>
         <div class="recommendation-text">${recommendation}</div>
     `;
-    return recommendationDiv;
+    return recElement;
 }
 
 function downloadSnapshot() {
@@ -357,12 +406,16 @@ function downloadSnapshot() {
 ${quizConfig.app_config.title.toUpperCase()}
 ${'='.repeat(quizConfig.app_config.title.length + 10)}
 
-Overall Score: ${quizResults.totalScore}
-Maturity Level: ${quizResults.maturityLevel}
-Description: ${quizResults.maturityDescription}
+Overall Average Score: ${quizResults.averagePillarScore.toFixed(1)}/5.0
+Total Raw Score: ${quizResults.totalScore}
+Maturity Level: ${quizResults.maturityLevel ? quizResults.maturityLevel.level : 'N/A'}
+Description: ${quizResults.maturityLevel ? quizResults.maturityLevel.description : 'Could not determine maturity level.'}
 
-Pillar Scores:
-${Object.entries(quizResults.pillarScores).map(([pillar, score]) => `${pillar}: ${score}%`).join('\n')}
+Pillar Scores (Average):
+${Object.entries(quizResults.pillarScores).map(([pillarKey, pillarResult]) => {
+    const averageScore = pillarResult.count > 0 ? pillarResult.score / pillarResult.count : 0;
+    return `${quizConfig.pillars[pillarKey].name}: ${averageScore.toFixed(1)}/5.0`;
+}).join('\n')}
 
 Key Recommendations:
 ${quizResults.recommendations.map((rec, index) => `${index + 1}. ${rec}`).join('\n')}
@@ -414,9 +467,10 @@ async function sendEmail(contactData) {
             title: contactData.title,
             phone: contactData.phone,
             message: contactData.message,
-            maturity_level: contactData.quizResults.maturityLevel,
+            maturity_level: contactData.quizResults.maturityLevel ? contactData.quizResults.maturityLevel.level : 'N/A',
             total_score: contactData.quizResults.totalScore,
-            percentage: contactData.quizResults.percentage,
+            average_score: contactData.quizResults.averagePillarScore.toFixed(1),
+            percentage: Math.round((contactData.quizResults.totalScore / (quizConfig.questions.length * 4)) * 100),
             recommendations: contactData.quizResults.recommendations.join('\n'),
             quiz_answers: JSON.stringify(contactData.quizAnswers, null, 2)
         };

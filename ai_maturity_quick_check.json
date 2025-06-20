@@ -13,7 +13,7 @@
     "snapshot": {
       "title": "AI MATURITY SNAPSHOT",
       "subtitle": "Your Organization's AI Readiness Profile",
-      "pillars_title": "📊 Pillar Scores",
+      "pillars_title": "AI Maturity Model Scoring",
       "recommendations_title": "💡 Key Recommendations"
     },
     "contact": {
@@ -89,6 +89,32 @@
       "type": "primary"
     }
   },
+  "pillars": {
+    "ethical_use": {
+      "name": "Ethical, Equitable, & Responsible",
+      "icon": "public/icons/ethical.svg"
+    },
+    "strategy_resources": {
+      "name": "Strategy & Resources",
+      "icon": "public/icons/strategy.svg"
+    },
+    "organization": {
+      "name": "Organization",
+      "icon": "public/icons/organization.svg"
+    },
+    "data_analytics": {
+      "name": "Data & Analytics",
+      "icon": "public/icons/data.svg"
+    },
+    "tech_infra": {
+      "name": "Technology Infrastructure",
+      "icon": "public/icons/technology.svg"
+    },
+    "risk_monitoring": {
+      "name": "Risk Management & Monitoring",
+      "icon": "public/icons/performance.svg"
+    }
+  },
   "description": "A rapid assessment tool to evaluate AI maturity across key organizational dimensions. This quick check provides immediate insights into your organization's AI readiness and highlights areas of uncertainty that may require deeper assessment.",
   "instructions": "For each question, select the answer that best describes your organization's current state. Each answer provides insights into your maturity level and potential areas for improvement.",
   "scoring_guide": {
@@ -118,7 +144,7 @@
       "id": 1,
       "category": "Ethical Governance & Accountability",
       "question": "Do you have clear rules and checks to control how AI is used and to handle unexpected problems?",
-      "pillars_covered": ["Ethical, Equitable, & Responsible Use"],
+      "pillars_covered": ["ethical_use"],
       "choices": {
         "Yes": {
           "text": "Yes",
@@ -146,7 +172,7 @@
       "id": 2,
       "category": "Strategic Clarity & Leadership Commitment",
       "question": "Does your organization have a clear AI plan, a set budget, and visible leadership support to drive adoption?",
-      "pillars_covered": ["Strategy & Resources"],
+      "pillars_covered": ["strategy_resources"],
       "choices": {
         "Yes": {
           "text": "Yes",
@@ -174,7 +200,7 @@
       "id": 3,
       "category": "Workforce Readiness & Culture",
       "question": "Is your team trained, assigned clear roles, and supported by a culture that helps them use AI safely and confidently?",
-      "pillars_covered": ["Organization"],
+      "pillars_covered": ["organization"],
       "choices": {
         "Yes": {
           "text": "Yes",
@@ -202,7 +228,7 @@
       "id": 4,
       "category": "Technology & Data Foundations",
       "question": "Do you already have the basic tools, safeguards, and data rules needed to run AI safely?",
-      "pillars_covered": ["Technology Enablers", "Data"],
+      "pillars_covered": ["tech_infra", "data_analytics"],
       "choices": {
         "Yes": {
           "text": "Yes",
@@ -230,7 +256,7 @@
       "id": 5,
       "category": "Business Value & Oversight",
       "question": "Do you have a way to measure, track, and keep improving how well AI performs, delivers ROI, and stays trustworthy?",
-      "pillars_covered": ["Performance & Application"],
+      "pillars_covered": ["risk_monitoring"],
       "choices": {
         "Yes": {
           "text": "Yes",
