@@ -84,23 +84,56 @@ function populateUIContent() {
 
 function generateContactForm() {
     const contactForm = document.getElementById('contact-form');
+    contactForm.innerHTML = ''; // Clear existing content
     const fields = quizConfig.sections.contact.fields;
-    let formHTML = '';
+
     Object.entries(fields).forEach(([fieldName, fieldConfig]) => {
-        formHTML += `<div class="form-group">
-            <label for="contact-${fieldName}">${fieldConfig.label}</label>`;
+        const formGroup = document.createElement('div');
+        formGroup.className = 'form-group';
+
+        const label = document.createElement('label');
+        const fieldId = `contact-${fieldName}`;
+        label.setAttribute('for', fieldId);
+        label.textContent = fieldConfig.label;
+        formGroup.appendChild(label);
+
+        let input;
         if (fieldConfig.type === 'textarea') {
-            formHTML += `<textarea id="contact-${fieldName}" name="${fieldName}" rows="4" placeholder="${fieldConfig.placeholder || ''}" ${fieldConfig.required ? 'required' : ''}></textarea>`;
+            input = document.createElement('textarea');
+            input.rows = 4;
+            input.placeholder = fieldConfig.placeholder || '';
         } else {
-            formHTML += `<input type="${fieldConfig.type}" id="contact-${fieldName}" name="${fieldName}" ${fieldConfig.required ? 'required' : ''}>`;
+            input = document.createElement('input');
+            input.type = fieldConfig.type;
         }
-        formHTML += '</div>';
+
+        input.id = fieldId;
+        input.name = fieldName;
+        if (fieldConfig.required) {
+            input.required = true;
+        }
+
+        formGroup.appendChild(input);
+        contactForm.appendChild(formGroup);
     });
-    formHTML += `<div class="form-actions">
-        <button type="button" id="back-to-snapshot" class="btn btn-outline">${quizConfig.buttons.back_to_snapshot.text}</button>
-        <button type="submit" class="btn btn-primary">${quizConfig.buttons.send_request.text}</button>
-    </div>`;
-    contactForm.innerHTML = formHTML;
+
+    const formActions = document.createElement('div');
+    formActions.className = 'form-actions';
+
+    const backButton = document.createElement('button');
+    backButton.type = 'button';
+    backButton.id = 'back-to-snapshot';
+    backButton.className = 'btn btn-outline';
+    backButton.textContent = quizConfig.buttons.back_to_snapshot.text;
+    formActions.appendChild(backButton);
+
+    const submitButton = document.createElement('button');
+    submitButton.type = 'submit';
+    submitButton.className = 'btn btn-primary';
+    submitButton.textContent = quizConfig.buttons.send_request.text;
+    formActions.appendChild(submitButton);
+
+    contactForm.appendChild(formActions);
 }
 
 function initializeEmailJS() {
