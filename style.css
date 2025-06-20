@@ -768,6 +768,7 @@ body::before {
   margin-right: auto;
   letter-spacing: 0.01em;
   line-height: 1.6;
+  
 }
 
 .hero-actions {
@@ -1856,6 +1857,7 @@ body::before {
   margin: 0 auto;
   opacity: 0.95;
   padding-bottom: 2rem;
+  text-align: center;
 }
 
 .hero-content {
