@@ -54,7 +54,6 @@ function populateUIContent() {
     document.getElementById('success-description').textContent = quizConfig.sections.success.description;
     document.getElementById('footer-copyright').textContent = quizConfig.app_config.footer_copyright;
     document.getElementById('footer-tagline').textContent = quizConfig.app_config.footer_tagline;
-    document.getElementById('back-to-quiz').textContent = quizConfig.buttons.back_to_quiz.text;
     document.getElementById('download-snapshot').textContent = quizConfig.buttons.download_snapshot.text;
     document.getElementById('start-over').textContent = quizConfig.buttons.start_over.text;
     
@@ -142,7 +141,6 @@ function initializeEmailJS() {
 
 function setupEventListeners() {
     document.getElementById('start-quiz').addEventListener('click', startQuizFlow);
-    document.getElementById('back-to-quiz').addEventListener('click', showQuizSection);
     document.getElementById('download-snapshot').addEventListener('click', downloadSnapshot);
     document.getElementById('start-over').addEventListener('click', startOver);
     document.addEventListener('submit', function(event) {
