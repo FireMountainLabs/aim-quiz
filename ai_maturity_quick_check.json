@@ -8,7 +8,6 @@
   },
   "sections": {
     "quiz": {
-      "title": "Begin the Assessment",
       "description": "It only takes a few moments to complete."
     },
     "snapshot": {
@@ -90,7 +89,6 @@
       "type": "primary"
     }
   },
-  "assessment_title": "5-Question AI Maturity Quick Check (Cross-Pillar)",
   "description": "A rapid assessment tool to evaluate AI maturity across key organizational dimensions. This quick check provides immediate insights into your organization's AI readiness and highlights areas of uncertainty that may require deeper assessment.",
   "instructions": "For each question, select the answer that best describes your organization's current state. Each answer provides insights into your maturity level and potential areas for improvement.",
   "scoring_guide": {
