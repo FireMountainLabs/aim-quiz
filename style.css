@@ -1158,11 +1158,9 @@ body::before {
   color: #b3baff;
   line-height: 1.6;
   white-space: normal !important;
-  overflow: visible !important;
-  text-overflow: unset !important;
-  width: 100%;
-  max-width: 100%;
-  display: block;
+  max-width: 500px;
+  margin: 0 auto;
+  text-align: center;
 }
 
 /* Question Card Styling */
