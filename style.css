@@ -1363,6 +1363,27 @@ body::before {
   color: white;
 }
 
+/* Special styling for the "Book a Free Consult" button */
+.btn-consult {
+  font-size: 1.2rem;
+  font-weight: 700;
+  padding: 1.2em 3em;
+  min-width: 250px;
+  background: linear-gradient(135deg, #CB6929 0%, #74121D 100%);
+  color: #fff;
+  box-shadow: 0 6px 24px 0 rgba(203, 105, 41, 0.3);
+  border: none;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.btn-consult:hover {
+  background: linear-gradient(135deg, #74121D 0%, #CB6929 100%);
+  box-shadow: 0 10px 40px 0 rgba(203, 105, 41, 0.4);
+  transform: translateY(-3px);
+  color: #fff;
+}
+
 /* Snapshot Section Styling */
 .snapshot-section {
   background: #00263A; /* Dark blue-black background */
