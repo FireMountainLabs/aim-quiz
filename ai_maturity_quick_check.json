@@ -13,7 +13,7 @@
     "snapshot": {
       "title": "AI MATURITY SNAPSHOT",
       "subtitle": "Your Organization's AI Readiness Profile",
-      "pillars_title": "📊 Pillar Scores",
+      "pillars_title": "AI Maturity Model Scoring",
       "recommendations_title": "💡 Key Recommendations"
     },
     "contact": {
@@ -89,27 +89,53 @@
       "type": "primary"
     }
   },
+  "pillars": {
+    "ethical_use": {
+      "name": "Ethical, Equitable, & Responsible",
+      "icon": "public/icons/ethical.svg"
+    },
+    "strategy_resources": {
+      "name": "Strategy & Resources",
+      "icon": "public/icons/strategy.svg"
+    },
+    "organization": {
+      "name": "Organization",
+      "icon": "public/icons/organization.svg"
+    },
+    "data_analytics": {
+      "name": "Data & Analytics",
+      "icon": "public/icons/data.svg"
+    },
+    "tech_infra": {
+      "name": "Technology Infrastructure",
+      "icon": "public/icons/technology.svg"
+    },
+    "risk_monitoring": {
+      "name": "Risk Management & Monitoring",
+      "icon": "public/icons/performance.svg"
+    }
+  },
   "description": "A rapid assessment tool to evaluate AI maturity across key organizational dimensions. This quick check provides immediate insights into your organization's AI readiness and highlights areas of uncertainty that may require deeper assessment.",
   "instructions": "For each question, select the answer that best describes your organization's current state. Each answer provides insights into your maturity level and potential areas for improvement.",
   "scoring_guide": {
     "Yes": {
       "description": "High Maturity",
-      "score": 4,
+      "score": 4.5,
       "interpretation": "Strong foundation in this area"
     },
     "Partially": {
       "description": "Mid Maturity", 
-      "score": 2,
+      "score": 2.5,
       "interpretation": "Some progress but room for improvement"
     },
     "No": {
       "description": "Low Maturity",
-      "score": 0,
+      "score": 1,
       "interpretation": "Significant work needed in this area"
     },
     "I Don't Know": {
       "description": "High Uncertainty",
-      "score": 1,
+      "score": 1.5,
       "interpretation": "Red flag - requires deeper assessment or expert help"
     }
   },
@@ -118,26 +144,26 @@
       "id": 1,
       "category": "Ethical Governance & Accountability",
       "question": "Do you have clear rules and checks to control how AI is used and to handle unexpected problems?",
-      "pillars_covered": ["Ethical, Equitable, & Responsible Use"],
+      "pillars_covered": ["ethical_use"],
       "choices": {
         "Yes": {
           "text": "Yes",
-          "score": 4,
+          "score": 4.5,
           "description": "You have well-defined governance, enforced rules, and regular reviews for AI impacts."
         },
         "Partially": {
           "text": "Partially",
-          "score": 2,
+          "score": 2.5,
           "description": "Some rules or reviews exist, but they're incomplete or not always enforced."
         },
         "No": {
           "text": "No",
-          "score": 0,
+          "score": 1,
           "description": "There's no clear process to manage AI use or review consequences."
         },
         "I Don't Know": {
           "text": "I Don't Know",
-          "score": 1,
+          "score": 1.5,
           "description": "You're not sure if there's a process or how strong it is."
         }
       }
@@ -146,26 +172,26 @@
       "id": 2,
       "category": "Strategic Clarity & Leadership Commitment",
       "question": "Does your organization have a clear AI plan, a set budget, and visible leadership support to drive adoption?",
-      "pillars_covered": ["Strategy & Resources"],
+      "pillars_covered": ["strategy_resources"],
       "choices": {
         "Yes": {
           "text": "Yes",
-          "score": 4,
+          "score": 4.5,
           "description": "You have a clear AI strategy, dedicated budget, and active leadership backing."
         },
         "Partially": {
           "text": "Partially",
-          "score": 2,
+          "score": 2.5,
           "description": "Some pieces are in place, but commitment or funding is not consistent."
         },
         "No": {
           "text": "No",
-          "score": 0,
+          "score": 1,
           "description": "No clear AI strategy, budget, or visible leadership support."
         },
         "I Don't Know": {
           "text": "I Don't Know",
-          "score": 1,
+          "score": 1.5,
           "description": "Not sure about the AI plan, budget, or level of leadership support."
         }
       }
@@ -174,26 +200,26 @@
       "id": 3,
       "category": "Workforce Readiness & Culture",
       "question": "Is your team trained, assigned clear roles, and supported by a culture that helps them use AI safely and confidently?",
-      "pillars_covered": ["Organization"],
+      "pillars_covered": ["organization"],
       "choices": {
         "Yes": {
           "text": "Yes",
-          "score": 4,
+          "score": 4.5,
           "description": "Your workforce is well-trained, roles are clear, and the culture supports safe AI use."
         },
         "Partially": {
           "text": "Partially",
-          "score": 2,
+          "score": 2.5,
           "description": "Some training and role clarity exist, but gaps remain or culture needs work."
         },
         "No": {
           "text": "No",
-          "score": 0,
+          "score": 1,
           "description": "Team lacks enough training, clear roles, or supportive culture for AI."
         },
         "I Don't Know": {
           "text": "I Don't Know",
-          "score": 1,
+          "score": 1.5,
           "description": "Not sure how ready or supported your workforce is for AI."
         }
       }
@@ -202,26 +228,26 @@
       "id": 4,
       "category": "Technology & Data Foundations",
       "question": "Do you already have the basic tools, safeguards, and data rules needed to run AI safely?",
-      "pillars_covered": ["Technology Enablers", "Data"],
+      "pillars_covered": ["tech_infra", "data_analytics"],
       "choices": {
         "Yes": {
           "text": "Yes",
-          "score": 4,
+          "score": 4.5,
           "description": "You have reliable infrastructure, clear security/testing routines, and documented data-governance rules."
         },
         "Partially": {
           "text": "Partially",
-          "score": 2,
+          "score": 2.5,
           "description": "Some of those pieces exist, but a few still need work or formalization."
         },
         "No": {
           "text": "No",
-          "score": 0,
+          "score": 1,
           "description": "You're missing most of the infrastructure, security/testing, or data-governance basics."
         },
         "I Don't Know": {
           "text": "I Don't Know",
-          "score": 1,
+          "score": 1.5,
           "description": "You're unsure how complete or effective your current foundations are."
         }
       }
@@ -230,26 +256,26 @@
       "id": 5,
       "category": "Business Value & Oversight",
       "question": "Do you have a way to measure, track, and keep improving how well AI performs, delivers ROI, and stays trustworthy?",
-      "pillars_covered": ["Performance & Application"],
+      "pillars_covered": ["risk_monitoring"],
       "choices": {
         "Yes": {
           "text": "Yes",
-          "score": 4,
+          "score": 4.5,
           "description": "You have clear processes to measure performance, ROI, and trust, and you review them regularly."
         },
         "Partially": {
           "text": "Partially",
-          "score": 2,
+          "score": 2.5,
           "description": "Some measurement and oversight exist, but they're limited or not consistent."
         },
         "No": {
           "text": "No",
-          "score": 0,
+          "score": 1,
           "description": "No clear way to measure AI performance, ROI, or trustworthiness."
         },
         "I Don't Know": {
           "text": "I Don't Know",
-          "score": 1,
+          "score": 1.5,
           "description": "Not sure if there's a way to measure or improve AI performance and trust."
         }
       }
@@ -257,7 +283,7 @@
   ],
   "interpretation_guide": {
     "total_score_ranges": {
-      "16-20": {
+      "18-22.5": {
         "level": "Level 4: Managed",
         "description": "Strong AI foundation across all key areas. Focus on optimization and advanced capabilities.",
         "recommendations": [
@@ -266,7 +292,7 @@
           "Share best practices with industry peers"
         ]
       },
-      "11-15": {
+      "12.5-17.5": {
         "level": "Level 3: Developing", 
         "description": "Good progress in most areas with some opportunities for improvement.",
         "recommendations": [
@@ -275,7 +301,7 @@
           "Increase leadership visibility and commitment"
         ]
       },
-      "6-10": {
+      "7.5-12": {
         "level": "Level 2: Engaged",
         "description": "Moderate AI readiness with significant areas needing attention.",
         "recommendations": [
@@ -284,8 +310,8 @@
           "Invest in workforce training and culture change"
         ]
       },
-      "0-5": {
-        "level": "Initial Maturity",
+      "5-7": {
+        "level": "Level 1: Initial",
         "description": "Limited AI readiness requiring foundational work across multiple areas.",
         "recommendations": [
           "Start with basic AI governance and strategy",
@@ -304,7 +330,7 @@
     }
   },
   "usage_notes": {
-    "scoring": "Each 'Yes' ≈ High Maturity, 'Partially' ≈ Mid Maturity, 'No' ≈ Low Maturity",
+    "scoring": "Each 'Yes' ≈ Level 4 (4.5), 'Partially' ≈ Level 3 (2.5), 'No' ≈ Level 1 (1.0), 'I Don't Know' ≈ Level 1.5 (1.5)",
     "uncertainty": "'I Don't Know' highlights uncertainty — a red flag for deeper assessment or expert help",
     "next_steps": "Use results to identify priority areas for improvement and determine if detailed assessment is needed"
   }
