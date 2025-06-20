@@ -336,7 +336,7 @@ function displaySnapshot(results) {
         const pillarResult = results.pillarScores[pillarKey];
         // Calculate average score for this pillar
         const averageScore = pillarResult.count > 0 ? pillarResult.score / pillarResult.count : 0;
-        const pillarElement = createPillarElement(pillarInfo, averageScore);
+        const pillarElement = createPillarElement(pillarInfo, averageScore, pillarKey);
         pillarsContainer.appendChild(pillarElement);
     }
 
@@ -351,30 +351,13 @@ function displaySnapshot(results) {
     }
 }
 
-function createPillarElement(pillar, score) {
+function createPillarElement(pillar, score, pillarKey) {
     const pillarRow = document.createElement('div');
     pillarRow.className = 'pillar-row';
+    pillarRow.dataset.pillar = pillarKey;
 
-    // Calculate blocks to fill based on the score (0-4.5 scale)
-    let blocksToFill = 0;
-    if (score <= 0) {
-        blocksToFill = 0;
-    } else if (score <= 1) {
-        blocksToFill = 1;
-    } else if (score <= 2) {
-        blocksToFill = 2;
-    } else if (score <= 3) {
-        blocksToFill = 3;
-    } else if (score <= 4) {
-        blocksToFill = 4;
-    } else {
-        blocksToFill = 5; // For scores 4-4.5
-    }
-
-    let meterBlocksHtml = '';
-    for (let i = 0; i < 5; i++) {
-        meterBlocksHtml += `<div class="meter-block ${i < blocksToFill ? 'filled' : ''}"></div>`;
-    }
+    // The score is on a 0-4 scale. Dividing by 4 makes a perfect score fill the bar.
+    const progressValue = score / 4;
 
     pillarRow.innerHTML = `
         <div class="pillar-details">
@@ -382,9 +365,7 @@ function createPillarElement(pillar, score) {
             <span class="pillar-name">${pillar.name.toUpperCase()}</span>
         </div>
         <div class="pillar-performance">
-            <div class="pillar-meter-horizontal">
-                ${meterBlocksHtml}
-            </div>
+            <md-linear-progress value="${progressValue}"></md-linear-progress>
         </div>
     `;
     return pillarRow;
