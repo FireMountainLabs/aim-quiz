@@ -24,7 +24,7 @@ fi
 
 # 2. Encode the file content
 echo "🔄 Encoding '$INPUT_JSON_FILE'..."
-BASE64_CONTENT=$(cat "$INPUT_JSON_FILE" | base64)
+BASE64_CONTENT=$(base64 -i "$INPUT_JSON_FILE")
 
 if [ -z "$BASE64_CONTENT" ]; then
     echo "❌ Error: Failed to encode file content. The file might be empty."
