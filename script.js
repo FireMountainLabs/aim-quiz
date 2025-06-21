@@ -30,9 +30,35 @@ async function initializeApp() {
 }
 
 async function loadQuizConfig() {
-    const response = await fetch('./ai_maturity_quick_check.json');
-    if (!response.ok) throw new Error('Failed to load quiz configuration');
-    quizConfig = await response.json();
+    const configJsonString = import.meta.env.VITE_QUIZ_JSON_CONTENT;
+    if (configJsonString) {
+        // In production, load config from the base64 encoded environment variable
+        console.log("Loading quiz config from environment variable.");
+        try {
+            // Decode the base64 string first, then parse the resulting JSON string
+            const decodedJson = atob(configJsonString);
+            quizConfig = JSON.parse(decodedJson);
+        } catch (error) {
+            console.error('Failed to parse base64 encoded quiz config from environment variable:', error);
+            if (error instanceof DOMException && error.name === 'InvalidCharacterError') {
+                showError('Configuration Error: The provided quiz content is not a valid Base64 string. Please check your VITE_QUIZ_JSON_CONTENT variable in your .env file or GitHub Secret.');
+            } else if (error instanceof SyntaxError) {
+                showError('Configuration Error: The decoded quiz content is not valid JSON. Please check the source ai_maturity_quick_check.json file for syntax errors like missing commas or quotes.');
+            } else {
+                showError('A generic configuration error occurred. Please contact support.');
+            }
+        }
+    } else {
+        // In local development, load from the local file (which is not in the repo)
+        console.log("Loading quiz config from local ai_maturity_quick_check.json file.");
+        const response = await fetch('./ai_maturity_quick_check.json');
+        if (!response.ok) {
+            console.error('Failed to load local ai_maturity_quick_check.json');
+            showError('Could not load quiz configuration file. Make sure ai_maturity_quick_check.json exists in the root of the project for local development.');
+            throw new Error('Failed to load local quiz configuration');
+        }
+        quizConfig = await response.json();
+    }
 }
 
 function populateUIContent() {

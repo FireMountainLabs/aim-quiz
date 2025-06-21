@@ -147,3 +147,6 @@ script.template.js
 dist/
 dist-ssr/
 *.local
+
+# Local-only quiz configuration file
+ai_maturity_quick_check.json
