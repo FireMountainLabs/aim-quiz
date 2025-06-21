@@ -85,7 +85,8 @@ async function loadQuizConfig() {
         // In production, load config from the base64 encoded environment variable
         console.log("Loading quiz config from environment variable.");
         try {
-            const decodedJson = atob(configJsonString);
+            // Use a UTF-8-aware base64 decoder instead of atob()
+            const decodedJson = decodeBase64UTF8(configJsonString);
             quizConfig = JSON.parse(decodedJson);
         } catch (error) {
             if (error instanceof DOMException) {
@@ -104,6 +105,23 @@ async function loadQuizConfig() {
             throw new Error('Could not load local quiz configuration file.');
         }
         quizConfig = await response.json();
+    }
+}
+
+// UTF-8-aware base64 decoder function
+function decodeBase64UTF8(str) {
+    try {
+        // First try the modern approach with TextDecoder
+        const binaryString = atob(str);
+        const bytes = new Uint8Array(binaryString.length);
+        for (let i = 0; i < binaryString.length; i++) {
+            bytes[i] = binaryString.charCodeAt(i);
+        }
+        return new TextDecoder('utf-8').decode(bytes);
+    } catch (error) {
+        // Fallback to legacy atob if TextDecoder is not available
+        console.warn('TextDecoder not available, using legacy atob fallback');
+        return atob(str);
     }
 }
 
