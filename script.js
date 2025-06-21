@@ -1,9 +1,9 @@
 // AI Maturity Snapshot Application - Modern One-Question-at-a-Time Flow
-// EmailJS Configuration (will be replaced during build)
+// EmailJS Configuration
 const EMAILJS_CONFIG = {
-    USER_ID: '{{EMAILJS_USER_ID}}',
-    SERVICE_ID: '{{EMAILJS_SERVICE_ID}}',
-    TEMPLATE_ID: '{{EMAILJS_TEMPLATE_ID}}'
+    USER_ID: import.meta.env.VITE_EMAILJS_USER_ID,
+    SERVICE_ID: import.meta.env.VITE_EMAILJS_SERVICE_ID,
+    TEMPLATE_ID: import.meta.env.VITE_EMAILJS_TEMPLATE_ID
 };
 
 let quizConfig = null;
@@ -441,45 +441,114 @@ function startOver() {
 
 function handleContactForm(event) {
     event.preventDefault();
+    
+    // Check for honeypot field (spam protection)
     const honeypot = document.getElementById('website') ? document.getElementById('website').value : '';
-    if (honeypot) return;
+    if (honeypot) {
+        console.log('Honeypot field filled - likely spam');
+        return;
+    }
+    
     const formData = new FormData(event.target);
     const contactData = {
-        name: formData.get('name'),
-        email: formData.get('email'),
-        company: formData.get('company'),
-        title: formData.get('title'),
-        phone: formData.get('phone'),
-        message: formData.get('message'),
-        quizResults: quizResults,
-        quizAnswers: quizAnswers
+        name: formData.get('name')?.trim(),
+        email: formData.get('email')?.trim(),
+        company: formData.get('company')?.trim(),
+        title: formData.get('title')?.trim(),
+        phone: formData.get('phone')?.trim(),
+        message: formData.get('message')?.trim()
     };
+    
+    // Validate required fields
+    const requiredFields = ['name', 'email', 'company'];
+    const missingFields = requiredFields.filter(field => !contactData[field]);
+    
+    if (missingFields.length > 0) {
+        showError(`Please fill in all required fields: ${missingFields.join(', ')}`);
+        return;
+    }
+    
+    // Validate email format
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(contactData.email)) {
+        showError('Please enter a valid email address');
+        return;
+    }
+    
+    // Add quiz results to contact data
+    contactData.quizResults = quizResults;
+    contactData.quizAnswers = quizAnswers;
+    
+    // Send email
     sendEmail(contactData);
 }
 
 async function sendEmail(contactData) {
+    const submitButton = document.querySelector('#contact-form button[type="submit"]');
+    const originalButtonText = submitButton.textContent;
+    
     try {
+        // Show loading state
+        submitButton.disabled = true;
+        submitButton.textContent = 'Sending...';
+        
         const templateParams = {
             to_email: 'info@firemountainlabs.com',
             from_name: contactData.name,
             from_email: contactData.email,
             company: contactData.company,
-            title: contactData.title,
-            phone: contactData.phone,
-            message: contactData.message,
+            title: contactData.title || 'Not provided',
+            phone: contactData.phone || 'Not provided',
+            message: contactData.message || 'No additional notes provided',
             maturity_level: contactData.quizResults.maturityLevel ? contactData.quizResults.maturityLevel.level : 'N/A',
             maturity_level_number: contactData.quizResults.maturityLevelNumber,
             total_score: contactData.quizResults.totalScore,
             average_score: contactData.quizResults.averagePillarScore.toFixed(1),
             percentage: Math.round((contactData.quizResults.totalScore / (quizConfig.questions.length * 4.5)) * 100),
-            recommendations: contactData.quizResults.recommendations.join('\n'),
-            quiz_answers: JSON.stringify(contactData.quizAnswers, null, 2)
+            recommendations: contactData.quizResults.recommendations.join('\n• '),
+            quiz_answers: JSON.stringify(contactData.quizAnswers, null, 2),
+            timestamp: new Date().toISOString(),
+            user_agent: navigator.userAgent
         };
-        await emailjs.send(EMAILJS_CONFIG.SERVICE_ID, EMAILJS_CONFIG.TEMPLATE_ID, templateParams);
+        
+        // Validate EmailJS configuration
+        if (!EMAILJS_CONFIG.USER_ID || !EMAILJS_CONFIG.SERVICE_ID || !EMAILJS_CONFIG.TEMPLATE_ID) {
+            throw new Error('EmailJS configuration is incomplete. Please check your environment variables.');
+        }
+        
+        // Send email using EmailJS
+        const response = await emailjs.send(
+            EMAILJS_CONFIG.SERVICE_ID, 
+            EMAILJS_CONFIG.TEMPLATE_ID, 
+            templateParams
+        );
+        
+        console.log('Email sent successfully:', response);
         showSuccessMessage();
+        
     } catch (error) {
         console.error('Failed to send email:', error);
-        showError('Failed to send your request. Please try again or contact us directly at info@firemountainlabs.com');
+        
+        // Provide specific error messages based on error type
+        let errorMessage = 'Failed to send your request. ';
+        
+        if (error.text && error.text.includes('Invalid template')) {
+            errorMessage += 'Email template configuration error. Please contact support.';
+        } else if (error.text && error.text.includes('Invalid service')) {
+            errorMessage += 'Email service configuration error. Please contact support.';
+        } else if (error.text && error.text.includes('Invalid user')) {
+            errorMessage += 'Email service authentication error. Please contact support.';
+        } else if (error.text && error.text.includes('rate limit')) {
+            errorMessage += 'Too many requests. Please try again in a few minutes.';
+        } else {
+            errorMessage += 'Please try again or contact us directly at info@firemountainlabs.com';
+        }
+        
+        showError(errorMessage);
+        
+        // Reset button state
+        submitButton.disabled = false;
+        submitButton.textContent = originalButtonText;
     }
 }
 

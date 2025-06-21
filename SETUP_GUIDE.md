@@ -251,3 +251,96 @@ After successful deployment:
 ---
 
 **🎉 Congratulations!** Your AI Maturity Snapshot is now live and ready to generate leads for Fire Mountain Labs. 
+
+# EmailJS Setup Guide
+
+This application uses EmailJS to send assessment results to info@firemountainlabs.com when users submit their contact information.
+
+## Prerequisites
+
+1. Create an EmailJS account at [https://www.emailjs.com/](https://www.emailjs.com/)
+2. Set up an email service (Gmail, Outlook, etc.)
+3. Create an email template
+
+## Setup Steps
+
+### 1. EmailJS Account Setup
+
+1. Sign up at [EmailJS](https://www.emailjs.com/)
+2. Verify your email address
+3. Add an email service (Gmail, Outlook, etc.)
+
+### 2. Create Email Template
+
+Create a new email template in EmailJS with the following variables:
+
+```
+To: {{to_email}}
+From: {{from_name}} <{{from_email}}>
+Subject: New AI Maturity Assessment - {{company}}
+
+Name: {{from_name}}
+Email: {{from_email}}
+Company: {{company}}
+Title: {{title}}
+Phone: {{phone}}
+
+Message: {{message}}
+
+Assessment Results:
+- Maturity Level: {{maturity_level}}
+- Level Number: {{maturity_level_number}}
+- Total Score: {{total_score}}
+- Average Score: {{average_score}}
+- Percentage: {{percentage}}%
+
+Recommendations:
+{{recommendations}}
+
+Quiz Answers:
+{{quiz_answers}}
+```
+
+### 3. Get Your EmailJS Credentials
+
+1. Go to EmailJS dashboard
+2. Copy your **User ID** (Public Key)
+3. Copy your **Service ID**
+4. Copy your **Template ID**
+
+### 4. Configure Environment Variables
+
+Create a `.env` file in the project root. **Important:** Vite requires that environment variables be prefixed with `VITE_` to be accessible in your application code.
+
+```env
+VITE_EMAILJS_USER_ID=your_user_id_here
+VITE_EMAILJS_SERVICE_ID=your_service_id_here
+VITE_EMAILJS_TEMPLATE_ID=your_template_id_here
+```
+
+### 5. Build and Deploy
+
+```bash
+npm run build
+```
+
+The build process will automatically replace the placeholders with your EmailJS credentials.
+
+## Testing
+
+1. Run the development server: `npm run dev`
+2. Complete the assessment
+3. Fill out the contact form
+4. Submit - you should receive an email at info@firemountainlabs.com
+
+## Troubleshooting
+
+- **Email not sending**: Check EmailJS dashboard for error logs
+- **Template variables not working**: Ensure all variables are properly defined in your EmailJS template
+- **Build issues**: Verify environment variables are set correctly
+
+## Security Notes
+
+- EmailJS credentials are public and safe to include in client-side code
+- The service uses your EmailJS account's rate limits and security settings
+- Consider setting up email validation and spam protection in EmailJS 
