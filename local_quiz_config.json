@@ -1,0 +1,85 @@
+{
+  "app_config": {
+    "title": "Generic Assessment Tool",
+    "subtitle": "This is a sample assessment. Answer the questions to see how the tool works.",
+    "logo_image_url": "",
+    "company_name": "Fire Mountain Labs",
+    "footer_copyright": "© 2025 Your Company Name",
+    "footer_tagline": "A tagline for your company."
+  },
+  "sections": {
+    "quiz": {
+      "description": "This is a generic quiz description."
+    },
+    "snapshot": {
+      "title": "Your Assessment Snapshot",
+      "subtitle": "A profile of your results.",
+      "pillars_title": "Scoring by Pillar",
+      "recommendations_title": "Key Recommendations"
+    },
+    "contact": {
+      "title": "Contact Us for More Information",
+      "description": "Fill out the form to get in touch.",
+      "fields": {
+        "name": { "label": "Full Name *", "type": "text", "required": true },
+        "email": { "label": "Email Address *", "type": "email", "required": true },
+        "company": { "label": "Company *", "type": "text", "required": true }
+      }
+    },
+    "success": {
+      "title": "Thank You!",
+      "description": "Your submission has been received.",
+      "icon": "🎉"
+    }
+  },
+  "buttons": {
+    "generate_snapshot": { "text": "Generate Snapshot" },
+    "submit_contact": { "text": "Submit" },
+    "back_to_quiz": { "text": "Back to Quiz" },
+    "back_to_snapshot": { "text": "Back to Snapshot" },
+    "download_snapshot": { "text": "Learn More" },
+    "start_over": { "text": "Start Over" },
+    "send_request": { "text": "Send" }
+  },
+  "pillars": {
+    "pillar_1": {
+      "name": "Pillar One",
+      "icon": "icons/strategy.svg"
+    },
+    "pillar_2": {
+      "name": "Pillar Two",
+      "icon": "icons/data.svg"
+    }
+  },
+  "questions": [
+    {
+      "id": 1,
+      "category": "Sample Category A",
+      "question": "This is the first sample question. How would you rate your current status?",
+      "pillars_covered": ["pillar_1"],
+      "choices": {
+        "Yes": { "text": "Good", "score": 4.5, "description": "Status is good." },
+        "Partially": { "text": "Okay", "score": 2.5, "description": "Status is okay." },
+        "No": { "text": "Needs Improvement", "score": 1, "description": "Status needs improvement." }
+      }
+    },
+    {
+      "id": 2,
+      "category": "Sample Category B",
+      "question": "This is the second sample question. What is your preference?",
+      "pillars_covered": ["pillar_2"],
+      "choices": {
+        "Yes": { "text": "Option A", "score": 4.5, "description": "You prefer Option A." },
+        "Partially": { "text": "Option B", "score": 2.5, "description": "You prefer Option B." },
+        "No": { "text": "Option C", "score": 1, "description": "You prefer Option C." }
+      }
+    }
+  ],
+  "interpretation_guide": {
+    "total_score_ranges": {
+      "8-9": { "level": "Level 3: High", "description": "This is a high score." },
+      "4-7": { "level": "Level 2: Medium", "description": "This is a medium score." },
+      "0-3": { "level": "Level 1: Low", "description": "This is a low score." }
+    }
+  }
+} 

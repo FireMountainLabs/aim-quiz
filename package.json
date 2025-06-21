@@ -1,0 +1,32 @@
+{
+  "name": "web-quiz",
+  "version": "1.0.0",
+  "description": "Fire Mountain Labs web quiz",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "deploy": "npm run build && gh-pages -d dist"
+  },
+  "devDependencies": {
+    "vite": "^5.0.0",
+    "gh-pages": "^6.0.0"
+  },
+  "dependencies": {
+    "@emailjs/browser": "^3.11.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/FireMountainLabs/aim-quiz.git"
+  },
+  "keywords": [
+    "ai",
+    "maturity",
+    "assessment",
+    "quiz",
+    "fire-mountain-labs"
+  ],
+  "author": "Fire Mountain Labs",
+  "license": "MIT"
+} 
