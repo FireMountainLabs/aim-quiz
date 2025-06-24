@@ -132,7 +132,7 @@ function populateUIContent() {
     document.getElementById('page-title').textContent = pageTitle;
 
     document.getElementById('hero-title').textContent = quizConfig.app_config.title;
-    document.getElementById('hero-subtitle').textContent = quizConfig.app_config.subtitle;
+    document.getElementById('hero-subtitle').innerHTML = quizConfig.app_config.subtitle;
     document.getElementById('company-name').textContent = quizConfig.app_config.company_name;
     document.getElementById('quiz-title').textContent = quizConfig.sections.quiz.title;
     document.getElementById('quiz-description').textContent = quizConfig.sections.quiz.description;
