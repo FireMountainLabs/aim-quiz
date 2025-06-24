@@ -2068,4 +2068,9 @@ md-linear-progress {
 }
 .pillar-row[data-pillar="risk_monitoring"] md-linear-progress {
     --md-linear-progress-active-indicator-color: var(--pillar-color-risk);
+}
+
+a, a:visited, a:active, a:focus {
+  color: #fff !important;
+  text-decoration: underline;
 } 
