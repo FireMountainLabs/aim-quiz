@@ -1,7 +1,7 @@
 import { defineConfig } from 'vite'
 
 export default defineConfig({
-  base: '/ai-maturity-quiz/',
+  base: '/aim-quiz/',
   build: {
     outDir: 'dist',
     assetsDir: 'assets',
