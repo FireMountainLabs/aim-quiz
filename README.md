@@ -223,4 +223,4 @@ The app sends the following custom events to Google Analytics:
 You can view these events in the **Realtime** or **Events** section of your GA4 dashboard.
 
 ---
-_Built with modern web technologies for creating engaging assessments_
+_Built with modern web technologies for creating engaging assessments_# Trigger deployment
