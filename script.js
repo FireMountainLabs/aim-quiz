@@ -4,6 +4,7 @@ let EMAILJS_CONFIG = null;
 
 // Inject Google Analytics gtag.js if Measurement ID is set in env
 const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+console.log('GA ID:', GA_MEASUREMENT_ID);
 if (GA_MEASUREMENT_ID) {
   // Inject the gtag.js script
   const gaScript = document.createElement('script');
