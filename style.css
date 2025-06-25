@@ -2052,22 +2052,22 @@ md-linear-progress {
 
 /* Pillar-specific overrides */
 .pillar-row[data-pillar="ethical_use"] md-linear-progress {
-    --md-linear-progress-active-indicator-color: var(--pillar-color-ethical);
+    --md-linear-progress-active-indicator-color: #56C271;
 }
 .pillar-row[data-pillar="strategy_resources"] md-linear-progress {
-    --md-linear-progress-active-indicator-color: var(--pillar-color-strategy);
+    --md-linear-progress-active-indicator-color: #CB6929;
 }
 .pillar-row[data-pillar="organization"] md-linear-progress {
-    --md-linear-progress-active-indicator-color: var(--pillar-color-organization);
+    --md-linear-progress-active-indicator-color: #4FC3F7;
 }
-.pillar-row[data-pillar="data_analytics"] md-linear-progress {
-    --md-linear-progress-active-indicator-color: var(--pillar-color-data);
+.pillar-row[data-pillar="data"] md-linear-progress {
+    --md-linear-progress-active-indicator-color: #FFD54F;
 }
-.pillar-row[data-pillar="tech_infra"] md-linear-progress {
-    --md-linear-progress-active-indicator-color: var(--pillar-color-tech);
+.pillar-row[data-pillar="tech_enablers"] md-linear-progress {
+    --md-linear-progress-active-indicator-color: #BA68C8;
 }
-.pillar-row[data-pillar="risk_monitoring"] md-linear-progress {
-    --md-linear-progress-active-indicator-color: var(--pillar-color-risk);
+.pillar-row[data-pillar="performance_application"] md-linear-progress {
+    --md-linear-progress-active-indicator-color: #E57373;
 }
 
 a, a:visited, a:active, a:focus {
