@@ -2,47 +2,6 @@
 // EmailJS Configuration - Only defined when not in fallback mode
 let EMAILJS_CONFIG = null;
 
-// Google Analytics Configuration
-let GA_CONFIG = null;
-
-// Initialize Google Analytics if measurement ID is provided
-function initializeGoogleAnalytics() {
-    const measurementId = import.meta.env.VITE_GA_MEASUREMENT_ID;
-    console.log('Initializing Google Analytics...');
-    console.log('Measurement ID from env:', measurementId);
-    
-    if (measurementId) {
-        console.log('Measurement ID found, injecting GA scripts...');
-        
-        // Dynamically inject Google Analytics script
-        const script1 = document.createElement('script');
-        script1.async = true;
-        script1.src = `https://www.googletagmanager.com/gtag/js?id=${measurementId}`;
-        script1.onload = () => console.log('GA script 1 loaded successfully');
-        script1.onerror = () => console.error('Failed to load GA script 1');
-        document.head.appendChild(script1);
-
-        const script2 = document.createElement('script');
-        script2.innerHTML = `
-            window.dataLayer = window.dataLayer || [];
-            function gtag(){dataLayer.push(arguments);}
-            gtag('js', new Date());
-            gtag('config', '${measurementId}');
-            console.log('GA script 2 executed, gtag function created');
-        `;
-        document.head.appendChild(script2);
-
-        GA_CONFIG = { measurementId };
-        // Expose GA_CONFIG globally for debugging
-        window.GA_CONFIG = GA_CONFIG;
-        
-        console.log('Google Analytics initialized with measurement ID:', measurementId);
-        console.log('GA_CONFIG set:', GA_CONFIG);
-    } else {
-        console.log('No Google Analytics measurement ID provided');
-    }
-}
-
 const FALLBACK_QUIZ_CONFIG = {
   "app_config": {
     "title": "AI Maturity Checkup (Demo)",
@@ -108,24 +67,7 @@ async function initializeApp() {
 
     try {
         populateUIContent();
-        // Initialize Google Analytics
-        initializeGoogleAnalytics();
-        // Only initialize EmailJS if not in fallback mode
-        if (!isFallbackMode) {
-            initializeEmailJS();
-        }
         setupEventListeners();
-        
-        // Track initial page view for landing page
-        setTimeout(() => {
-            if (GA_CONFIG && typeof gtag !== 'undefined') {
-                gtag('event', 'page_view', {
-                    page_title: 'AI Maturity Quiz - Landing',
-                    page_location: window.location.href,
-                    page_path: '/'
-                });
-            }
-        }, 1000); // Small delay to ensure GA is loaded
         
     } catch (error) {
         console.error('Failed to initialize app with quiz config:', error);
@@ -320,28 +262,6 @@ function startQuizFlow() {
     quizAbandoned = false;
     document.getElementById('quiz-actions').style.display = 'none';
     
-    // Google Analytics event tracking for quiz start
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'quiz_started', {
-            'event_category': 'Quiz',
-            'event_label': 'AI Maturity Quiz',
-            'total_questions': quizConfig.questions.length
-        });
-    } else if (GA_CONFIG) {
-        setTimeout(() => {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'quiz_started', {
-                    'event_category': 'Quiz',
-                    'event_label': 'AI Maturity Quiz',
-                    'total_questions': quizConfig.questions.length
-                });
-            }
-        }, 1000);
-    }
-    
-    // Set up abandonment tracking
-    setupAbandonmentTracking();
-    
     renderSingleQuestion();
 }
 
@@ -357,66 +277,11 @@ function renderSingleQuestion() {
         // Remove abandonment tracking since quiz is completed
         removeAbandonmentTracking();
         
-        // Google Analytics event tracking for quiz completion
-        if (GA_CONFIG && typeof gtag !== 'undefined') {
-            gtag('event', 'quiz_completed', {
-                'event_category': 'Quiz',
-                'event_label': 'AI Maturity Quiz',
-                'value': 1,
-                'total_questions': quizConfig.questions.length,
-                'completion_time': Date.now() - quizStartTime,
-                'completion_time_seconds': Math.round((Date.now() - quizStartTime) / 1000)
-            });
-        } else if (GA_CONFIG) {
-            // If gtag isn't ready yet, queue the event
-            setTimeout(() => {
-                if (typeof gtag !== 'undefined') {
-                    gtag('event', 'quiz_completed', {
-                        'event_category': 'Quiz',
-                        'event_label': 'AI Maturity Quiz',
-                        'value': 1,
-                        'total_questions': quizConfig.questions.length,
-                        'completion_time': Date.now() - quizStartTime,
-                        'completion_time_seconds': Math.round((Date.now() - quizStartTime) / 1000)
-                    });
-                }
-            }, 1000);
-        }
         return;
     }
     
     const question = quizConfig.questions[currentQuestionIndex];
     currentQuestionStartTime = Date.now(); // Track when this question started
-    
-    // Google Analytics event tracking for question start
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'question_started', {
-            'event_category': 'Quiz',
-            'event_label': `Question ${question.id}: ${question.category}`,
-            'question_id': question.id,
-            'question_category': question.category,
-            'question_number': currentQuestionIndex + 1,
-            'total_questions': quizConfig.questions.length,
-            'question_text': question.question.substring(0, 100), // First 100 chars for context
-            'questions_answered': Object.keys(quizAnswers).length
-        });
-    } else if (GA_CONFIG) {
-        // If gtag isn't ready yet, queue the event
-        setTimeout(() => {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'question_started', {
-                    'event_category': 'Quiz',
-                    'event_label': `Question ${question.id}: ${question.category}`,
-                    'question_id': question.id,
-                    'question_category': question.category,
-                    'question_number': currentQuestionIndex + 1,
-                    'total_questions': quizConfig.questions.length,
-                    'question_text': question.question.substring(0, 100),
-                    'questions_answered': Object.keys(quizAnswers).length
-                });
-            }
-        }, 1000);
-    }
     
     const questionDiv = document.createElement('div');
     questionDiv.className = 'question-card';
@@ -451,42 +316,6 @@ function renderSingleQuestion() {
                 timeSpent: questionTime
             };
             
-            // Google Analytics event tracking for question answered with detailed metrics
-            if (GA_CONFIG && typeof gtag !== 'undefined') {
-                gtag('event', 'question_answered', {
-                    'event_category': 'Quiz',
-                    'event_label': `Question ${question.id}: ${question.category}`,
-                    'question_id': question.id,
-                    'question_category': question.category,
-                    'selected_choice': radio.value,
-                    'question_number': currentQuestionIndex + 1,
-                    'total_questions': quizConfig.questions.length,
-                    'time_spent_ms': questionTime,
-                    'time_spent_seconds': Math.round(questionTime / 1000),
-                    'choice_score': parseInt(radio.dataset.score),
-                    'question_text': question.question.substring(0, 100)
-                });
-            } else if (GA_CONFIG) {
-                // If gtag isn't ready yet, queue the event
-                setTimeout(() => {
-                    if (typeof gtag !== 'undefined') {
-                        gtag('event', 'question_answered', {
-                            'event_category': 'Quiz',
-                            'event_label': `Question ${question.id}: ${question.category}`,
-                            'question_id': question.id,
-                            'question_category': question.category,
-                            'selected_choice': radio.value,
-                            'question_number': currentQuestionIndex + 1,
-                            'total_questions': quizConfig.questions.length,
-                            'time_spent_ms': questionTime,
-                            'time_spent_seconds': Math.round(questionTime / 1000),
-                            'choice_score': parseInt(radio.dataset.score),
-                            'question_text': question.question.substring(0, 100)
-                        });
-                    }
-                }, 1000);
-            }
-            
             // Visual feedback
             questionDiv.querySelectorAll('.choice').forEach(label => label.classList.remove('selected'));
             radio.closest('.choice').classList.add('selected');
@@ -512,57 +341,21 @@ function showQuizSection() {
     document.getElementById('quiz-actions').style.display = quizStarted ? 'none' : 'block';
     document.getElementById('single-question-container').innerHTML = '';
     quizStarted = false;
-    
-    // Track virtual page view for quiz section
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'page_view', {
-            page_title: 'Quiz Section',
-            page_location: window.location.href + '#quiz',
-            page_path: '/quiz'
-        });
-    }
 }
 
 function showSnapshotSection() {
     hideAllSections();
     document.getElementById('snapshot-section').style.display = 'block';
-    
-    // Track virtual page view for snapshot section
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'page_view', {
-            page_title: 'Results Snapshot',
-            page_location: window.location.href + '#snapshot',
-            page_path: '/snapshot'
-        });
-    }
 }
 
 function showContactSection() {
     hideAllSections();
     document.getElementById('contact-section').style.display = 'block';
-    
-    // Track virtual page view for contact section
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'page_view', {
-            page_title: 'Contact Form',
-            page_location: window.location.href + '#contact',
-            page_path: '/contact'
-        });
-    }
 }
 
 function showSuccessMessage() {
     hideAllSections();
     document.getElementById('success-message').style.display = 'flex';
-    
-    // Track virtual page view for success section
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'page_view', {
-            page_title: 'Success Message',
-            page_location: window.location.href + '#success',
-            page_path: '/success'
-        });
-    }
 }
 
 function hideAllSections() {
@@ -938,39 +731,9 @@ function trackQuizAbandonment(reason) {
     const currentQuestion = quizConfig.questions[currentQuestionIndex];
     const timeSpent = Date.now() - quizStartTime;
     
-    if (GA_CONFIG && typeof gtag !== 'undefined') {
-        gtag('event', 'quiz_abandoned', {
-            'event_category': 'Quiz',
-            'event_label': `Abandoned at Question ${currentQuestionIndex + 1}`,
-            'abandonment_reason': reason,
-            'question_id': currentQuestion ? currentQuestion.id : null,
-            'question_category': currentQuestion ? currentQuestion.category : null,
-            'question_number': currentQuestionIndex + 1,
-            'total_questions': quizConfig.questions.length,
-            'questions_answered': Object.keys(quizAnswers).length,
-            'time_spent_ms': timeSpent,
-            'time_spent_seconds': Math.round(timeSpent / 1000),
-            'completion_percentage': Math.round((Object.keys(quizAnswers).length / quizConfig.questions.length) * 100)
-        });
-    } else if (GA_CONFIG) {
-        setTimeout(() => {
-            if (typeof gtag !== 'undefined') {
-                gtag('event', 'quiz_abandoned', {
-                    'event_category': 'Quiz',
-                    'event_label': `Abandoned at Question ${currentQuestionIndex + 1}`,
-                    'abandonment_reason': reason,
-                    'question_id': currentQuestion ? currentQuestion.id : null,
-                    'question_category': currentQuestion ? currentQuestion.category : null,
-                    'question_number': currentQuestionIndex + 1,
-                    'total_questions': quizConfig.questions.length,
-                    'questions_answered': Object.keys(quizAnswers).length,
-                    'time_spent_ms': timeSpent,
-                    'time_spent_seconds': Math.round(timeSpent / 1000),
-                    'completion_percentage': Math.round((Object.keys(quizAnswers).length / quizConfig.questions.length) * 100)
-                });
-            }
-        }, 1000);
-    }
+    // Track abandonment event
+    // This is a placeholder and should be replaced with actual implementation
+    console.log(`User abandoned quiz. Reason: ${reason}`);
 }
 
 // Track long dwell time on questions (potential confusion)
@@ -986,17 +749,7 @@ function setupQuestionDwellTracking() {
             const currentQuestion = quizConfig.questions[currentQuestionIndex];
             if (currentQuestion && currentQuestion.id === quizConfig.questions[currentQuestionIndex].id) {
                 // User is still on the same question after 30 seconds
-                if (GA_CONFIG && typeof gtag !== 'undefined') {
-                    gtag('event', 'question_long_dwell', {
-                        'event_category': 'Quiz',
-                        'event_label': `Long dwell on Question ${currentQuestion.id}`,
-                        'question_id': currentQuestion.id,
-                        'question_category': currentQuestion.category,
-                        'question_number': currentQuestionIndex + 1,
-                        'dwell_time_seconds': 30,
-                        'question_text': currentQuestion.question.substring(0, 100)
-                    });
-                }
+                console.log(`User dwelled on Question ${currentQuestion.id} for ${Date.now() - questionStartTime} ms`);
             }
         }
     }, 30000);
@@ -1007,17 +760,7 @@ function setupQuestionDwellTracking() {
             const currentQuestion = quizConfig.questions[currentQuestionIndex];
             if (currentQuestion && currentQuestion.id === quizConfig.questions[currentQuestionIndex].id) {
                 // User is still on the same question after 60 seconds
-                if (GA_CONFIG && typeof gtag !== 'undefined') {
-                    gtag('event', 'question_very_long_dwell', {
-                        'event_category': 'Quiz',
-                        'event_label': `Very long dwell on Question ${currentQuestion.id}`,
-                        'question_id': currentQuestion.id,
-                        'question_category': currentQuestion.category,
-                        'question_number': currentQuestionIndex + 1,
-                        'dwell_time_seconds': 60,
-                        'question_text': currentQuestion.question.substring(0, 100)
-                    });
-                }
+                console.log(`User dwelled on Question ${currentQuestion.id} for ${Date.now() - questionStartTime} ms`);
             }
         }
     }, 60000);
