@@ -299,13 +299,12 @@ function renderSingleQuestion() {
         // All questions answered, show snapshot
         quizResults = calculateResults(quizAnswers);
         // Google Analytics: Track quiz completion
-        if (typeof gtag === 'function') {
-            gtag('event', 'quiz_completed', {
-                total_score: quizResults.totalScore,
-                average_score: quizResults.averagePillarScore,
-                maturity_level: quizResults.maturityLevel ? quizResults.maturityLevel.level : 'N/A'
-            });
-        }
+        console.log('Sending event: quiz_completed', quizResults);
+        gtag('event', 'quiz_completed', {
+            total_score: quizResults.totalScore,
+            average_score: quizResults.averagePillarScore,
+            maturity_level: quizResults.maturityLevel ? quizResults.maturityLevel.level : 'N/A'
+        });
         displaySnapshot(quizResults);
         showSnapshotSection();
         
