@@ -195,4 +195,41 @@ MIT License - feel free to use and modify for your projects.
 - Check the documentation in `SETUP_GUIDE.md` for detailed setup instructions
 
 ---
+
+## Google Analytics Event Tracking
+
+This application includes detailed Google Analytics (GA4) event tracking to help you understand user behavior and identify where users may get stuck in the quiz flow.
+
+### Standard Page Views
+- **Landing Page** (`/`): When users first arrive
+- **Quiz Section** (`/quiz`): When users start the quiz
+- **Results Snapshot** (`/snapshot`): When users see their results
+- **Contact Form** (`/contact`): When users reach the contact form
+- **Success Message** (`/success`): When users complete the form
+
+### Custom Events
+| Event Name                | When It Fires                                 | Key Parameters Tracked                                                                 |
+|--------------------------|-----------------------------------------------|---------------------------------------------------------------------------------------|
+| `quiz_started`           | User starts the quiz                          | `total_questions`                                                                     |
+| `quiz_completed`         | User finishes all questions                   | `total_questions`, `completion_time`, `completion_time_seconds`                       |
+| `quiz_abandoned`         | User leaves before finishing                  | `abandonment_reason`, `question_id`, `question_number`, `questions_answered`, `completion_percentage`, `time_spent_ms` |
+| `question_started`       | Each time a question is displayed             | `question_id`, `question_category`, `question_number`, `total_questions`, `question_text`, `questions_answered`         |
+| `question_answered`      | User selects an answer                        | `question_id`, `selected_choice`, `question_number`, `time_spent_ms`, `choice_score`, `question_text`                   |
+| `question_long_dwell`    | User spends 30+ seconds on a question         | `question_id`, `question_number`, `dwell_time_seconds`, `question_text`                |
+| `question_very_long_dwell`| User spends 60+ seconds on a question        | `question_id`, `question_number`, `dwell_time_seconds`, `question_text`                |
+
+### How to Use This Data in GA4
+- **Pages and Screens Report:** See visits to each section of the app.
+- **Events Report:** Analyze custom events to find where users get stuck or abandon the quiz.
+- **Funnels:** Build a funnel from landing → quiz → results → contact → success to analyze drop-off points.
+- **User Journey:** Use event parameters to see which questions have high dwell time or abandonment.
+
+### Example Analysis
+- Identify questions with high `question_long_dwell` or `question_very_long_dwell` events to find confusing questions.
+- Use `quiz_abandoned` events to see where users are leaving the quiz.
+- Track overall quiz completion rates and time to complete.
+
+For more details, see the code in `script.js` and the GA4 documentation for custom event analysis.
+
+---
 _Built with modern web technologies for creating engaging assessments_
