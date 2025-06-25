@@ -271,11 +271,9 @@ function setupEventListeners() {
         if (event.target.id === 'back-to-snapshot') {
             event.preventDefault();
             // Google Analytics: Track back to assessment
-            if (typeof gtag === 'function') {
-                gtag('event', 'back_to_assessment', {
-                    from: 'contact_form'
-                });
-            }
+            sendGAEvent('back_to_assessment', {
+                from: 'contact_form'
+            });
             showSnapshotSection();
         }
     });
@@ -300,7 +298,7 @@ function renderSingleQuestion() {
         quizResults = calculateResults(quizAnswers);
         // Google Analytics: Track quiz completion
         console.log('Sending event: quiz_completed', quizResults);
-        gtag('event', 'quiz_completed', {
+        sendGAEvent('quiz_completed', {
             total_score: quizResults.totalScore,
             average_score: quizResults.averagePillarScore,
             maturity_level: quizResults.maturityLevel ? quizResults.maturityLevel.level : 'N/A'
@@ -350,14 +348,12 @@ function renderSingleQuestion() {
                 timeSpent: questionTime
             };
             // Google Analytics: Track question answered
-            if (typeof gtag === 'function') {
-                gtag('event', 'question_answered', {
-                    question_id: question.id,
-                    question_text: question.question,
-                    answer: radio.value,
-                    score: parseInt(radio.dataset.score)
-                });
-            }
+            sendGAEvent('question_answered', {
+                question_id: question.id,
+                question_text: question.question,
+                answer: radio.value,
+                score: parseInt(radio.dataset.score)
+            });
             // Visual feedback
             questionDiv.querySelectorAll('.choice').forEach(label => label.classList.remove('selected'));
             radio.closest('.choice').classList.add('selected');
@@ -631,13 +627,11 @@ function handleContactForm(event) {
     }
     
     // Google Analytics: Track contact form completion
-    if (typeof gtag === 'function') {
-        gtag('event', 'contact_form_completed', {
-            name: contactData.name,
-            email: contactData.email,
-            company: contactData.company
-        });
-    }
+    sendGAEvent('contact_form_completed', {
+        name: contactData.name,
+        email: contactData.email,
+        company: contactData.company
+    });
     
     // Add quiz results to contact data
     contactData.quizResults = quizResults;
@@ -698,13 +692,11 @@ async function sendEmail(contactData) {
         showSuccessMessage();
         
         // Google Analytics: Track form submitted success
-        if (typeof gtag === 'function') {
-            gtag('event', 'form_submitted_success', {
-                name: contactData.name,
-                email: contactData.email,
-                company: contactData.company
-            });
-        }
+        sendGAEvent('form_submitted_success', {
+            name: contactData.name,
+            email: contactData.email,
+            company: contactData.company
+        });
         
     } catch (error) {
         console.error('Failed to send email:', error);
@@ -791,13 +783,11 @@ function trackQuizAbandonment(reason) {
     const currentQuestion = quizConfig.questions[currentQuestionIndex];
     const timeSpent = Date.now() - quizStartTime;
     // Google Analytics: Track quiz abandonment
-    if (typeof gtag === 'function') {
-        gtag('event', 'quiz_abandoned', {
-            reason: reason,
-            question_id: currentQuestion ? currentQuestion.id : null,
-            time_spent: timeSpent
-        });
-    }
+    sendGAEvent('quiz_abandoned', {
+        reason: reason,
+        question_id: currentQuestion ? currentQuestion.id : null,
+        time_spent: timeSpent
+    });
     // Track abandonment event
     // This is a placeholder and should be replaced with actual implementation
     console.log(`User abandoned quiz. Reason: ${reason}`);
@@ -831,4 +821,13 @@ function setupQuestionDwellTracking() {
             }
         }
     }, 60000);
+}
+
+// Helper: Send GA event to parent if embedded, otherwise use gtag
+function sendGAEvent(eventName, params) {
+  if (window.parent && window.parent !== window) {
+    window.parent.postMessage({ type: 'GA_EVENT', eventName, params }, '*');
+  } else if (typeof gtag === 'function') {
+    gtag('event', eventName, params);
+  }
 } 
