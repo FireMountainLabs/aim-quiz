@@ -6,9 +6,6 @@ const FALLBACK_QUIZ_CONFIG = {
   "app_config": {
     "title": "AI Maturity Checkup (Demo)",
     "subtitle": "This is a demonstration version. Please contact support to access the full assessment.",
-    "company_name": "Fire Mountain Labs",
-    "footer_copyright": "© 2025 Fire Mountain Labs.",
-    "footer_tagline": "Humans that know AI."
   },
   "sections": {
     "quiz": { "description": "This is a demonstration version." },
@@ -133,7 +130,6 @@ function populateUIContent() {
 
     document.getElementById('hero-title').textContent = quizConfig.app_config.title;
     document.getElementById('hero-subtitle').innerHTML = quizConfig.app_config.subtitle;
-    document.getElementById('company-name').textContent = quizConfig.app_config.company_name;
     document.getElementById('quiz-title').textContent = quizConfig.sections.quiz.title;
     document.getElementById('quiz-description').textContent = quizConfig.sections.quiz.description;
     document.getElementById('snapshot-title').textContent = quizConfig.sections.snapshot.title;
@@ -145,8 +141,6 @@ function populateUIContent() {
     document.getElementById('success-icon').textContent = quizConfig.sections.success.icon;
     document.getElementById('success-title').textContent = quizConfig.sections.success.title;
     document.getElementById('success-description').textContent = quizConfig.sections.success.description;
-    document.getElementById('footer-copyright').textContent = quizConfig.app_config.footer_copyright;
-    document.getElementById('footer-tagline').textContent = quizConfig.app_config.footer_tagline;
     document.getElementById('download-snapshot').textContent = quizConfig.buttons.download_snapshot.text;
     document.getElementById('start-over').textContent = quizConfig.buttons.start_over.text;
     
