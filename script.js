@@ -270,6 +270,12 @@ function setupEventListeners() {
     document.addEventListener('click', function(event) {
         if (event.target.id === 'back-to-snapshot') {
             event.preventDefault();
+            // Google Analytics: Track back to assessment
+            if (typeof gtag === 'function') {
+                gtag('event', 'back_to_assessment', {
+                    from: 'contact_form'
+                });
+            }
             showSnapshotSection();
         }
     });
@@ -292,6 +298,14 @@ function renderSingleQuestion() {
     if (currentQuestionIndex >= quizConfig.questions.length) {
         // All questions answered, show snapshot
         quizResults = calculateResults(quizAnswers);
+        // Google Analytics: Track quiz completion
+        if (typeof gtag === 'function') {
+            gtag('event', 'quiz_completed', {
+                total_score: quizResults.totalScore,
+                average_score: quizResults.averagePillarScore,
+                maturity_level: quizResults.maturityLevel ? quizResults.maturityLevel.level : 'N/A'
+            });
+        }
         displaySnapshot(quizResults);
         showSnapshotSection();
         
@@ -336,7 +350,15 @@ function renderSingleQuestion() {
                 question: question,
                 timeSpent: questionTime
             };
-            
+            // Google Analytics: Track question answered
+            if (typeof gtag === 'function') {
+                gtag('event', 'question_answered', {
+                    question_id: question.id,
+                    question_text: question.question,
+                    answer: radio.value,
+                    score: parseInt(radio.dataset.score)
+                });
+            }
             // Visual feedback
             questionDiv.querySelectorAll('.choice').forEach(label => label.classList.remove('selected'));
             radio.closest('.choice').classList.add('selected');
@@ -609,6 +631,15 @@ function handleContactForm(event) {
         return;
     }
     
+    // Google Analytics: Track contact form completion
+    if (typeof gtag === 'function') {
+        gtag('event', 'contact_form_completed', {
+            name: contactData.name,
+            email: contactData.email,
+            company: contactData.company
+        });
+    }
+    
     // Add quiz results to contact data
     contactData.quizResults = quizResults;
     contactData.quizAnswers = quizAnswers;
@@ -666,6 +697,15 @@ async function sendEmail(contactData) {
         
         console.log('Email sent successfully:', response);
         showSuccessMessage();
+        
+        // Google Analytics: Track form submitted success
+        if (typeof gtag === 'function') {
+            gtag('event', 'form_submitted_success', {
+                name: contactData.name,
+                email: contactData.email,
+                company: contactData.company
+            });
+        }
         
     } catch (error) {
         console.error('Failed to send email:', error);
@@ -751,7 +791,14 @@ function trackQuizAbandonment(reason) {
     quizAbandoned = true;
     const currentQuestion = quizConfig.questions[currentQuestionIndex];
     const timeSpent = Date.now() - quizStartTime;
-    
+    // Google Analytics: Track quiz abandonment
+    if (typeof gtag === 'function') {
+        gtag('event', 'quiz_abandoned', {
+            reason: reason,
+            question_id: currentQuestion ? currentQuestion.id : null,
+            time_spent: timeSpent
+        });
+    }
     // Track abandonment event
     // This is a placeholder and should be replaced with actual implementation
     console.log(`User abandoned quiz. Reason: ${reason}`);
