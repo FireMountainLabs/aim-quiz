@@ -2,6 +2,26 @@
 // EmailJS Configuration - Only defined when not in fallback mode
 let EMAILJS_CONFIG = null;
 
+// Inject Google Analytics gtag.js if Measurement ID is set in env
+const GA_MEASUREMENT_ID = import.meta.env.VITE_GA_MEASUREMENT_ID;
+if (GA_MEASUREMENT_ID) {
+  // Inject the gtag.js script
+  const gaScript = document.createElement('script');
+  gaScript.async = true;
+  gaScript.src = `https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`;
+  document.head.appendChild(gaScript);
+
+  // Inject the gtag config script
+  const gaConfigScript = document.createElement('script');
+  gaConfigScript.innerHTML = `
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', '${GA_MEASUREMENT_ID}');
+  `;
+  document.head.appendChild(gaConfigScript);
+}
+
 const FALLBACK_QUIZ_CONFIG = {
   "app_config": {
     "title": "AI Maturity Checkup (Demo)",
