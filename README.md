@@ -221,6 +221,3 @@ The app sends the following custom events to Google Analytics:
 | form_submitted_success | Email is sent successfully via contact form          | name, email, company                             |
 
 You can view these events in the **Realtime** or **Events** section of your GA4 dashboard.
-
----
-_Built with modern web technologies for creating engaging assessments_# Trigger deployment
